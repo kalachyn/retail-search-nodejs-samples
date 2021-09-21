@@ -20,6 +20,7 @@ process.env['GOOGLE_APPLICATION_CREDENTIALS'] = './sa.json';
 To install all the dependancies, run
 
 ```
+cd cloudshell_open/retail-search-nodejs-samples
 npm install
 ```
 
