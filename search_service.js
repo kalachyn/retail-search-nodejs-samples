@@ -92,25 +92,6 @@ function sleep(ms) {
     });
 }
 
-// [START create product]
-async function createProduct(id, productToCreate) {
-    const createdProduct = await productClient.createProduct({
-        parent: defaultBranch,
-        productId: id,
-        product: productToCreate
-    });
-    return createdProduct[0];
-}
-// [END create product]
-
-// [START delete product]
-async function deleteProduct(name) {
-    await productClient.deleteProduct({
-        name: name
-    });
-    console.info('deleted product:' + name);
-}
-// [END delete product]
 
 // [START create primary and related variant products for search]
 async function createPrimaryAndVariantProductsForSearch(primaryProduct, variantProduct) {
