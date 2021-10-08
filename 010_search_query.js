@@ -17,20 +17,18 @@ const searchClient = new SearchServiceClient({
 });
 
 // [START search for product by query]
-async function searchProduct() {
-  await createPrimaryAndVariantProductsForSearch(); // TODO: remove when a sample database is setup
+(async function searchProduct() {
 
   const searchRequest = {
     placement: defaultSearchPlacement,
     branch: defaultBranch,
-    query: query_phrase, // experiment with other query strings
+    query: 'Single', // experiment with other query strings
     visitorId: visitorId,
   };
   const searchResponse = await searchClient.search(searchRequest);
-  console.log("First of the products found: ", searchResponse[0]);
+  console.log("Products found: ", searchResponse[0].map(prod => prod.product.title));
 
-  await cleanUpCatalog(); // TODO: remove when a sample database is setup
-}
+})();
 // [END search for product by query]
 
-searchProduct();
+// searchProduct();
