@@ -18,8 +18,6 @@ const searchClient = new SearchServiceClient({
 
 // [START search for product defining page size and offset]
 async function searchProductWithPageSizeAndOffset() {
-  await createPrimaryAndVariantProductsForSearch(); // TODO: remove when a sample database is setup
-
   const tryPageSize = 2;
   const tryOffset = 1;
   const searchRequest = {
@@ -35,8 +33,6 @@ async function searchProductWithPageSizeAndOffset() {
     `First of the products found at the page size of ${tryPageSize}, offset ${tryOffset}:\n`,
     searchResponse[0]
   );
-
-  await cleanUpCatalog(); // TODO: remove when a sample database is setup
 }
 // [END search for product defining page size and offset]
 

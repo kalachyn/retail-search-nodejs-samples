@@ -4,8 +4,12 @@
 const { SearchServiceClient } = require("@google-cloud/retail");
 
 const {
+  cleanUpCatalog,
   defaultBranch,
   defaultSearchPlacement,
+  deleteProduct,
+  createPrimaryAndVariantProductsForSearch,
+  query_phrase,
   visitorId,
 } = require("./setup_catalog.js");
 
@@ -13,30 +17,25 @@ const searchClient = new SearchServiceClient({
   apiEndpoint: "test-retail.sandbox.googleapis.com",
 });
 
-const MAX_RESULTS = 10;
-const sampleQuery = 'Single'; // try to experiment with other strings
-
 // [START search for product by query]
-async function searchProduct() {
-
+(async function searchProduct() {
   const searchRequest = {
     placement: defaultSearchPlacement,
     branch: defaultBranch,
-    query: sampleQuery,
+    query: "Maxi Dummy", // experiment with other query strings
     visitorId: visitorId,
   };
   const searchResponse = await searchClient.search(searchRequest);
-
-  const results = searchResponse[0];
-  console.log(
-    `First ${MAX_RESULTS} out of ${results.length} products found with query "${searchRequest.query}":\n`,
-    results
-      .slice(0, MAX_RESULTS)
-      .map((result, i) => `${i + 1}: ${result.product.title}`)
-  );
-
-
-}
+  for (const prod of searchResponse[0]) {
+    const { product } = prod;
+    console.log(product.title, product.name);
+    try {
+      await deleteProduct(product.name);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+})();
 // [END search for product by query]
 
-searchProduct();
+// searchProduct();

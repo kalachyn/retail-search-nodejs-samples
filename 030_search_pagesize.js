@@ -1,14 +1,11 @@
 /**
- * @fileoverview Search products by a substring and a filter.
+ * @fileoverview Search products by a substring with different page sizes.
  */
 const { SearchServiceClient } = require("@google-cloud/retail");
 
 const {
-  cleanUpCatalog,
   defaultBranch,
   defaultSearchPlacement,
-  createPrimaryAndVariantProductsForSearch,
-  query_phrase,
   visitorId,
 } = require("./setup_catalog.js");
 
@@ -16,22 +13,33 @@ const searchClient = new SearchServiceClient({
   apiEndpoint: "test-retail.sandbox.googleapis.com",
 });
 
+const MAX_RESULTS = 20;
+const sampleQuery = "Dummy"; // experiment with other query strings
+const tryPageSize = 10; // try different page sizes, including those over 100
+
 // [START search for product defining page size]
 async function searchProductWithPageSize() {
-  await createPrimaryAndVariantProductsForSearch(); // TODO: remove when a sample database is setup
-
-  const tryPageSize = 2;
   const searchRequest = {
     branch: defaultBranch,
-    pageSize: tryPageSize, // try different page sizes, including those over 100
+    // pageSize: tryPageSize,
     placement: defaultSearchPlacement,
-    query: query_phrase, // experiment with other query strings
+    query: sampleQuery,
     visitorId: visitorId,
   };
-  const searchResponse = await searchClient.search(searchRequest);
-  console.log(`First of the products found at the page size of ${tryPageSize}:\n`, searchResponse[0]);
+  const searchResponse = await searchClient.search(searchRequest, {
+    autoPaginate: true,
+    pageSize: tryPageSize,
+  });
+  const results = searchResponse[0];
 
-  await cleanUpCatalog();  // TODO: remove when a sample database is setup
+  console.log(searchResponse);
+
+  console.log(
+    `First ${MAX_RESULTS} out of ${results.length} found at the page size of ${tryPageSize}:\n`,
+    results
+      .slice(0, MAX_RESULTS)
+      .map((result, i) => `${i + 1}: ${result.product.title}`)
+  );
 }
 // [END search for product defining page size]
 

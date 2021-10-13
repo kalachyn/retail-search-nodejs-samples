@@ -126,8 +126,9 @@ async function createProduct(id, productToCreate) {
 
 // [START delete product]
 async function deleteProduct(name) {
+  const prodClient = new ProductServiceClient();
   console.log("Deleting product:", name);
-  await productClient.deleteProduct({ name: name });
+  await prodClient.deleteProduct({ name: name });
   console.info("Deleted", name);
 }
 // [END delete product]
@@ -201,6 +202,7 @@ module.exports = {
   createPrimaryAndVariantProductsForSearch,
   defaultBranch,
   defaultSearchPlacement,
+  deleteProduct,
   mockSetup,
   query_phrase,
   visitorId,

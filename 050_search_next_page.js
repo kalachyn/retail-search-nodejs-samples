@@ -18,8 +18,6 @@ const searchClient = new SearchServiceClient({
 
 // [START search for product defining page size]
 async function searchProductWithPageSizeAndNextPageToken() {
-  await createPrimaryAndVariantProductsForSearch(); // TODO: remove when a sample database is setup
-
   const tryPageSize = 1;
   const searchRequest = {
     branch: defaultBranch,
